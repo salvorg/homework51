@@ -1,24 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState} from 'react';
 import './App.css';
+import Number from "./Number/Number";
 
 function App() {
+  let array: number[] = [];
+  function sortedArray(a: number, b: number) {
+    return a - b;
+  }
+  const getRandomNumbers = () => {
+    for (let i = 0; i < 5; i++) {
+      let pass = false;
+      const random = Math.floor(Math.random() * 32 + 5);
+      for (let i = 0; i < 5; i++) {
+        if (random === array[i]) {
+          pass = true;
+          getRandomNumbers();
+        }
+      }
+      if (!pass) {
+        array.push(random);
+        array.sort(sortedArray);
+      }
+    }
+  };
+
+  const [number, setNumber] = useState<number[]>([]);
+
+  const changeNumber = () => {
+    getRandomNumbers();
+    setNumber(array);
+  };
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={changeNumber}>New numbers</button>
+      <Number value={number[0]}/>
+      <Number value={number[1]}/>
+      <Number value={number[2]}/>
+      <Number value={number[3]}/>
+      <Number value={number[4]}/>
     </div>
   );
 }
